@@ -1,0 +1,58 @@
+# Local .terraform directories
+**/.terraform/*
+
+.terraform/
+
+# Ignore provider binaries & plugin cache (explicit)
+.terraform/plugins/
+.terraform/providers/
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+
+# Ignore override files as they are usually used to override resources locally and so
+# are not checked in
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include override files you do wish to add to version control using negated pattern
+#
+# !example_override.tf
+
+# Plan output files
+*.tfplan
+*.tfplan.json
+
+# Infracost generated output
+infracost-base.json
+
+# Local tfvars with real secrets — use *.secret.tfvars or *.local.tfvars naming
+*.secret.tfvars
+*.local.tfvars
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+.vscode
+.vscode/*.json
+.vscode/settings.json
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
+# Ignore Windows alternative data stream marker
+*Zone.Identifier
+
+.codex

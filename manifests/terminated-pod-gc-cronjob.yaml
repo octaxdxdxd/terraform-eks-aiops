@@ -1,0 +1,64 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: terminated-pod-gc
+  namespace: kube-system
+  annotations:
+    checkov.io/skip1: "CKV_K8S_38=This cleanup job needs a mounted service account token to call the Kubernetes API."
+spec:
+  schedule: "*/30 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 600
+      template:
+        spec:
+          serviceAccountName: terminated-pod-gc
+          restartPolicy: OnFailure
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: kubectl
+              image: registry.k8s.io/kubectl:v1.34.5@sha256:c7bf8cf6e79f474fda2623a7b98572a1b909c4d912b05062b444ffe79883fdbe
+              imagePullPolicy: Always
+              env:
+                - name: HOME
+                  value: /tmp
+              command:
+                - kubectl
+                - delete
+                - pods
+                - --all-namespaces
+                - --field-selector=status.phase!=Running,status.phase!=Pending
+                - --ignore-not-found=true
+                - --wait=false
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 16Mi
+                limits:
+                  cpu: 100m
+                  memory: 128Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                runAsUser: 10001
+                runAsGroup: 10001
+                capabilities:
+                  drop:
+                    - ALL
+                seccompProfile:
+                  type: RuntimeDefault
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+          volumes:
+            - name: tmp
+              emptyDir: {}

@@ -1,0 +1,33 @@
+# Budget-driven exception: skip EKS control plane logging recommendation.
+# This suppresses AWS-0038 findings from terraform_trivy.
+AWS-0038
+
+# Disabling  (MEDIUM): VPC does not have VPC Flow Logs enabled.
+# See https://avd.aquasec.com/misconfig/aws-0178
+AWS-0178 
+
+# Accepted operational tradeoff: keep the EKS public endpoint enabled for kubectl/Lens access.
+# Exposure is restricted to approved administrator /32 CIDRs via cluster_endpoint_public_access_cidrs.
+# This suppresses AWS-0040 findings from terraform_trivy.
+AWS-0040
+
+# Accepted operational tradeoff: approved administrator /32 public CIDRs are allowed to reach the EKS public endpoint.
+# This suppresses AWS-0041 findings from terraform_trivy.
+AWS-0041
+
+# Accepted risk for this environment: EKS secrets envelope encryption with a customer-managed KMS key is not enabled.
+# This suppresses AWS-0039 findings from terraform_trivy.
+AWS-0039
+
+# Accepted operational tradeoff: worker nodes require general outbound internet access for public registries and dependencies.
+# This suppresses AWS-0104 findings from terraform_trivy.
+AWS-0104
+
+# Accepted operational tradeoff: this repo keeps the terminated-pod cleanup job in kube-system because it is a cluster-ops task.
+KSV-0037
+
+# Accepted operational tradeoff: the terminated-pod cleanup job uses the upstream registry.k8s.io/kubectl image.
+KSV-0125
+
+# Accepted operational tradeoff: the terminated-pod cleanup ClusterRole needs list/delete on pods cluster-wide to remove terminal pods.
+KSV-0048
